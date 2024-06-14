@@ -1,11 +1,16 @@
 export default class Player {
-    constructor(ctx, canvas) {  // Accept the context and canvas as parameters
+    constructor(ctx, canvas) {
         this.ctx = ctx;
         this.canvas = canvas;
         this.position = {
             x: 100,
             y: 100
         }
+
+        this.velocity = {
+            x: 0,
+            y: 0
+        };
 
         this.width = 100;
         this.height = 100;
@@ -15,6 +20,8 @@ export default class Player {
             left: this.position.x,
             top: this.position.y
         }
+
+        this.gravity = 1;
     }
 
     draw() {
@@ -23,9 +30,13 @@ export default class Player {
     }
 
     update() {
-        if (this.sides.bottom < this.canvas.height) {  // Use the canvas passed to the class
-            this.position.y++;
-            this.sides.bottom = this.position.y + this.height;
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
+        this.sides.bottom = this.position.y + this.height;
+        if (this.sides.bottom + this.velocity.y < this.canvas.height) {
+            this.velocity.y += this.gravity;
+        } else {
+            this.velocity.y = 0;
         }
     }
 }
